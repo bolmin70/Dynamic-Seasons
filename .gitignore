@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+samples/seasons/.vs/seasons/v16/.suo
+*.db
+*.ipch
+*.user
+*.recipe
+*.iobj
+*.ipdb
+*.log
+*.tlog
+*.pdb

@@ -68,6 +68,8 @@ void main()
 
 	bool ALWAYS_NO = GetPrivateProfileInt("MISC", "SEASON_WIDGET", 1, ".\\Seasons.ini");
 
+
+
 	if (seasonTimer == seasonLength) {
 		seasonTimer = 0;
 
@@ -209,12 +211,24 @@ void main()
 	bool disable_snow = 0;
 	int snow_timer = 0;
 
+
+	
+	Ped player = PLAYER::PLAYER_PED_ID();
+
+	Vector3 playerPos = ENTITY::GET_ENTITY_COORDS(player, true, false);
+	
+	bool fireworksOnce = 0;
+
+	int g_FireworkFxHandle;
+
+	int g_FireworkFxHandle2;
+
 	while (true)
 	{
 		srand(time(NULL));
 
-		Ped player = PLAYER::PLAYER_PED_ID();
-		Vector3 playerPos = ENTITY::GET_ENTITY_COORDS(player, true, false);
+		player = PLAYER::PLAYER_PED_ID();
+		playerPos = ENTITY::GET_ENTITY_COORDS(player, true, false);
 		Ped playerHorse = PLAYER::_GET_SADDLE_HORSE_FOR_PLAYER(0);
 
 
@@ -261,7 +275,39 @@ void main()
 		}
 
 
+		if (season == 3 && seasonTimer == seasonLength) {
+			if (CLOCK::GET_CLOCK_HOURS() == 0) {
+				if (!fireworksOnce) {
+					STREAMING::REQUEST_NAMED_PTFX_ASSET(MISC::GET_HASH_KEY("scr_ind1"));
+					AUDIO::REQUEST_SCRIPT_AUDIO_BANK("Industry_01");
+					
+					GRAPHICS::USE_PARTICLE_FX_ASSET("scr_ind1");
+					g_FireworkFxHandle = GRAPHICS::START_PARTICLE_FX_LOOPED_AT_COORD("scr_ind1_firework", 2401.857, -1021.108, 43.980, 0.0f, 0.0f, 0.0f, 1.0f, false, false, false, false);
 
+					STREAMING::REQUEST_NAMED_PTFX_ASSET(MISC::GET_HASH_KEY("scr_ind1"));
+					AUDIO::REQUEST_SCRIPT_AUDIO_BANK("Industry_01");
+
+					GRAPHICS::USE_PARTICLE_FX_ASSET("scr_ind1");
+					g_FireworkFxHandle2 = GRAPHICS::START_PARTICLE_FX_LOOPED_AT_COORD("scr_ind1_firework", -813.869, -1293.480, 55.856, 0.0f, 0.0f, 0.0f, 1.0f, false, false, false, false);
+
+
+					fireworksOnce = 1;
+				}
+			}
+			
+			if (CLOCK::GET_CLOCK_HOURS() == 3) {
+				GRAPHICS::STOP_PARTICLE_FX_LOOPED(g_FireworkFxHandle, false);
+				GRAPHICS::REMOVE_PARTICLE_FX(g_FireworkFxHandle, false);
+
+				GRAPHICS::STOP_PARTICLE_FX_LOOPED(g_FireworkFxHandle2, false);
+				GRAPHICS::REMOVE_PARTICLE_FX(g_FireworkFxHandle2, false);
+
+				AUDIO::RELEASE_NAMED_SCRIPT_AUDIO_BANK("Industry_01");
+				STREAMING::REMOVE_NAMED_PTFX_ASSET(MISC::GET_HASH_KEY("scr_ind1"));
+			}
+
+
+		}
 
 
 		if (extend_hud_timer < MISC::GET_GAME_TIMER() || GRAPHICS::ANIMPOSTFX_IS_RUNNING("WheelHUDIn")) {
@@ -790,7 +836,7 @@ void main()
 			switch (season) {
 				case 0: //early spring
 
-					GRAPHICS::_SET_SNOW_COVERAGE_TYPE(1); //"PlayerRPGEmptyCoreDeadEye" //"MissionChoice"
+					//GRAPHICS::_SET_SNOW_COVERAGE_TYPE(1); //"PlayerRPGEmptyCoreDeadEye" //"MissionChoice"
 				
 					GRAPHICS::ANIMPOSTFX_PLAY("PhotoMode_FilterModern02");
 
@@ -865,7 +911,7 @@ void main()
 					*/
 				case 2: //autumn
 
-					GRAPHICS::_SET_SNOW_COVERAGE_TYPE(1);
+					//GRAPHICS::_SET_SNOW_COVERAGE_TYPE(1);
 
 
 
