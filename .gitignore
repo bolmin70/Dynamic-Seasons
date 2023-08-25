@@ -40,3 +40,6 @@ samples/seasons/.vs/seasons/v16/.suo
 *.log
 *.tlog
 *.pdb
+samples/seasons/.vs/seasons/v16/Browse.VC.db-shm
+samples/seasons/.vs/seasons/v16/Browse.VC.db-wal
+samples/seasons/.vs/seasons/v16/Browse.VC.opendb
